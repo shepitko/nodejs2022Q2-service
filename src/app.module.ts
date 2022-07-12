@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ArtistsController } from './artists/artists.controller';
+import { ArtistController } from './artists/artist.controller';
 import { TracksController } from './tracks/tracks.controller';
 import { AlbumsController } from './albums/albums.controller';
 import { FavoritesController } from './favorites/favorites.controller';
 import { UsersController } from './users/users.controller';
-import { ArtistsService } from './artists/artists.service';
+import { ArtistService } from './artists/artist.service';
 import { TracksService } from './tracks/tracks.service';
 import { UsersService } from './users/users.service';
 import { FavoritesService } from './favorites/favorites.service';
@@ -13,14 +13,14 @@ import { AlbumsService } from './albums/albums.service';
 @Module({
   imports: [],
   controllers: [
-    ArtistsController,
+    ArtistController,
     TracksController,
     AlbumsController,
     FavoritesController,
     UsersController,
   ],
   providers: [
-    ArtistsService,
+    ArtistService,
     TracksService,
     UsersService,
     FavoritesService,
