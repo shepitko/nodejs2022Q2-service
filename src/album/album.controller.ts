@@ -5,10 +5,13 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  NotFoundException,
   Param,
   Post,
   Put,
 } from '@nestjs/common';
+import { FavoriteService } from 'src/favorite/favorite.service';
+import { TrackService } from 'src/track/track.service';
 import { AlbumService } from './album.service';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
@@ -16,7 +19,11 @@ import { Album } from './entities/album.entity';
 
 @Controller('album')
 export class AlbumController {
-  constructor(private readonly albumService: AlbumService) {}
+  constructor(
+    private readonly albumService: AlbumService,
+    private readonly trackService: TrackService,
+    private readonly favoriteService: FavoriteService,
+  ) {}
 
   @Get()
   getAll(): Album[] {
@@ -25,7 +32,13 @@ export class AlbumController {
 
   @Get('/:id')
   getOne(@Param('id') albumId: string): Album {
-    return this.albumService.getOne(albumId);
+    const album = this.albumService.getOne(albumId);
+
+    if (!album) {
+      throw new NotFoundException(`Album with id: ${albumId} not found`);
+    }
+
+    return album;
   }
 
   @Post()
@@ -35,12 +48,26 @@ export class AlbumController {
 
   @Put('/:id')
   update(@Param('id') albumId: string, @Body() updateData: UpdateAlbumDto) {
+    const album = this.albumService.getOne(albumId);
+
+    if (!album) {
+      throw new NotFoundException(`Album with id: ${albumId} not found`);
+    }
+
     return this.albumService.update(albumId, updateData);
   }
 
   @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   delete(@Param('id') albumId: string) {
-    return this.albumService.delete(albumId);
+    this.albumService.delete(albumId);
+
+    const tracks = this.trackService.getAllByAlbumId(albumId);
+
+    tracks.map((track) =>
+      this.trackService.update(track.id, { albumId: null }),
+    );
+
+    this.favoriteService.deleteAlbum(albumId);
   }
 }

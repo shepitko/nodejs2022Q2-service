@@ -22,11 +22,14 @@ export class AlbumService {
       throw new BadRequestException(`Album's id is invalid`);
     }
     const album = this.albums.find((album) => album.id === id);
-    if (!album) {
-      throw new NotFoundException(`Album with id: ${id} not found`);
-    }
 
     return album;
+  }
+
+  getAllByArtistId(artistId: string): Album[] {
+    const albums = this.albums.filter((album) => album.artistId === artistId);
+
+    return albums;
   }
 
   create(createData: CreateAlbumDto): Album {

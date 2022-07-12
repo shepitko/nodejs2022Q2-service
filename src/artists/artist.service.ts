@@ -20,10 +20,8 @@ export class ArtistService {
     if (!validateUUID(id)) {
       throw new BadRequestException(`Artist's id is invalid`);
     }
+
     const artist = this.artists.find((artist) => artist.id === id);
-    if (!artist) {
-      throw new NotFoundException(`Artist with id: ${id} not found`);
-    }
 
     return artist;
   }

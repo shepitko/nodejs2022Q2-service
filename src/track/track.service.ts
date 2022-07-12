@@ -22,11 +22,20 @@ export class TrackService {
       throw new BadRequestException(`Track's id is invalid`);
     }
     const track = this.tracks.find((track) => track.id === id);
-    if (!track) {
-      throw new NotFoundException(`Track with id: ${id} not found`);
-    }
 
     return track;
+  }
+
+  getAllByArtistId(artistId: string): Track[] {
+    const tracks = this.tracks.filter((track) => track.artistId === artistId);
+
+    return tracks;
+  }
+
+  getAllByAlbumId(albumId: string): Track[] {
+    const tracks = this.tracks.filter((track) => track.albumId === albumId);
+
+    return tracks;
   }
 
   create(createData: CreateTrackDto): Track {
