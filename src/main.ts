@@ -18,7 +18,6 @@ async function bootstrap() {
     .setTitle('REST Service')
     .setDescription('Home Library Service')
     .setVersion('1.0')
-    .addTag('music')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
