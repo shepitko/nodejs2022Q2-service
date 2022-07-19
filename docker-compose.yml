@@ -5,6 +5,7 @@ services:
       context: .
       # Only will build development stage from our dockerfile
       target: development
+    restart: always
     volumes:
       - .:/usr/src/app
       - ./usr/src/app/node_modules
