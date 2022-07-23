@@ -39,6 +39,9 @@ COPY --chown=node:node --from=development /usr/src/app/node_modules ./node_modul
 
 COPY --chown=node:node . .
 
+# Generate Prisma database client code
+RUN npm run prisma:generate
+
 # Run the build command which creates the production bundle
 RUN npm run build
 
